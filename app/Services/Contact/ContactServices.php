@@ -6,7 +6,7 @@ use App\Model\Contact;
 
 class ContactServices
 {
-    public static function getContactId($phone)
+    public static function contactExists($phone)
     {
         $contacts = Contact::all();
 

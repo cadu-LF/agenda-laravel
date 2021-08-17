@@ -55,7 +55,6 @@ class CreateNewContactRequest extends FormRequest
     public function messages()
     {
         return [
-            'email.required' => 'Email precisa ser inserido',
             'fullName.required' => 'É preciso inserir um nome',
             'phone.required' => 'É preciso inserir um telefone'
         ];

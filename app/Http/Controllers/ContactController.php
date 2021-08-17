@@ -17,6 +17,17 @@ use Illuminate\Support\Facades\Auth;
 
 class ContactController extends Controller
 {
+
+    /**
+     * Inicializando Service
+     */
+    protected $addressService;
+
+    public function __construct(
+        AddressServices $addressService
+    ) {
+        $this->addressService = $addressService;
+    }
     public function index()
     {
         $user = Auth::user();
@@ -45,16 +56,7 @@ class ContactController extends Controller
             $request->country
         );
 
-        #Address::where('cep', $addressParams->cep)->get()->toArray()[0]['cep'] === $addressParams->cep
-        #$addresses->contains(Address::where('cep', $addressParams->cep)->get('id')->toArray()[0]['id'])
-        if (Address::where('cep', $addressParams->cep)->get()->count() > 0) {
-            echo 'endereço já cadastrado ';
-        } else {
-            Address::make($addressParams);
-            echo 'novo endereço cadastrado ';
-        }
-
-        $addressId = Address::where('cep', $addressParams->cep)->get('id')->toArray()[0]['id'];
+        $addressId = $this->addressService->checkAddress($addressParams);
         var_dump($addressId);
 
         $categoryParams = new CreateCategoryServiceParams(
