@@ -9,7 +9,7 @@ class CreateCategoryServiceParams extends BaseServiceParams
     public $description;
 
     public function __construct(
-        string $description
+        $description
     ) {
         parent::__construct();
     }

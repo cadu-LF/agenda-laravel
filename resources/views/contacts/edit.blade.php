@@ -7,19 +7,19 @@ Editar Contato
 @section('content')
 <form>
     @include('components.form-group-edit', ['labelName' => 'Nome',
-                                            'inputValue' => 'Cadu Lourenco',
+                                            'inputValue' => "{{$contact->fullname}}",
                                             'name' => 'fullName'
                                         ])
     @include('components.form-group-edit', ['labelName' => 'Telefone',
-                                            'inputValue' => '123456',
+                                            'inputValue' => "{{$contact->phone}}",
                                             'name' => 'phone'
                                         ])
     @include('components.form-group-edit', ['labelName' => 'Anotacoes',
-                                            'inputValue' => 'note',
+                                            'inputValue' => "{{$contact->note}}",
                                             'name' => 'note'
                                         ])
     @include('components.form-group-edit', ['labelName' => 'Categoria',
-                                            'inputValue' => 'player',
+                                            'inputValue' => "{{$contact->id_category}}",
                                             'name' => 'category'
                                         ])
     @include('components.form-group-edit', ['labelName' => 'CEP',

@@ -12,16 +12,16 @@ use App\Services\Contact\ContactServices;
 use App\Services\Params\Address\CreateAddressServiceParams;
 use App\Services\Params\Category\CreateCategoryServiceParams;
 use App\Services\Params\Contact\CreateContactServiceParams;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ContactController extends Controller
 {
     public function index()
     {
-        $contacts = [
-            'Cadu Lourenco',
-            'Leonardo'
-        ];
+        $user = Auth::user();
+        $contacts = Contact::where('id_user', $user->id)->get();
+
 
         return view('contacts.index', compact('contacts'));
     }
@@ -45,10 +45,13 @@ class ContactController extends Controller
             $request->country
         );
 
-        if (Address::where('cep', $addressParams->cep)->get()->toArray()[0]['cep'] === $addressParams->cep) {
+        #Address::where('cep', $addressParams->cep)->get()->toArray()[0]['cep'] === $addressParams->cep
+        #$addresses->contains(Address::where('cep', $addressParams->cep)->get('id')->toArray()[0]['id'])
+        if (Address::where('cep', $addressParams->cep)->get()->count() > 0) {
             echo 'endereço já cadastrado ';
         } else {
             Address::make($addressParams);
+            echo 'novo endereço cadastrado ';
         }
 
         $addressId = Address::where('cep', $addressParams->cep)->get('id')->toArray()[0]['id'];
@@ -58,13 +61,15 @@ class ContactController extends Controller
             $request->category
         );
 
-        $categoryId = CategoryServices::getCategoryId($categoryParams->description);
-        if ($categoryId < 0) {
-            Category::make($categoryParams);
-            echo "nova categoria criada";
+        if (Category::where('description', $categoryParams->description)->get()->count() > 0) {
+            echo 'categoria já cadastrada ';
         } else {
-            echo 'categoria já cadastrada';
+            Category::make($categoryParams);
+            echo "nova categoria criada ";
         }
+
+        $categoryId = Category::where('description', $categoryParams->description)->get('id')->toArray()[0]['id'];
+        var_dump($categoryId);
 
         $contactParams = new CreateContactServiceParams(
             $request->fullName,
@@ -77,17 +82,20 @@ class ContactController extends Controller
         );
 
         #var_dump($contactParams);
-        $contactId = ContactServices::getContactId($contactParams->phone);
-/*
-        if ($contactId < 0) {
-            Contact::make($contactParams);
+
+        if (Contact::where('phone', $contactParams->phone)->get()->count() > 0) {
+            echo 'contato já cadastrado ';
         } else {
-            echo 'contato já cadastrado';
-        }*/
+            Contact::make($contactParams);
+            echo 'novo contato cadastrado ';
+        }
     }
 
-    public function edit()
+    public function edit(Request $request, $id)
     {
-        return view('contacts.edit');
+        // preciso pegar o id no url e filtrar o contato com aquele id
+        $contact = Contact::find($id);
+
+        return view('contacts.edit', compact('contact'));
     }
 }

@@ -165,6 +165,7 @@ return [
         /*
          * Package Service Providers...
          */
+        Prettus\Repository\Providers\RepositoryServiceProvider::class,
         Waavi\Sanitizer\Laravel\SanitizerServiceProvider::class,
 
         /*
