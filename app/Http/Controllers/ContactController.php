@@ -19,15 +19,23 @@ class ContactController extends Controller
 {
 
     /**
-     * Inicializando Service
+     * Inicializando Services
      */
-    protected $addressService;
+    protected $addressServices;
+    protected $categoryServices;
+    protected $contactServices;
 
     public function __construct(
-        AddressServices $addressService
+        AddressServices $addressServices,
+        CategoryServices $categoryServices,
+        ContactServices $contactServices
     ) {
-        $this->addressService = $addressService;
+        $this->addressServices = $addressServices;
+        $this->categoryServices = $categoryServices;
+        $this->contactServices = $contactServices;
     }
+
+
     public function index()
     {
         $user = Auth::user();
@@ -36,6 +44,7 @@ class ContactController extends Controller
 
         return view('contacts.index', compact('contacts'));
     }
+
 
     public function create()
     {
@@ -56,21 +65,14 @@ class ContactController extends Controller
             $request->country
         );
 
-        $addressId = $this->addressService->checkAddress($addressParams);
+        $addressId = $this->addressServices->checkAddress($addressParams);
         var_dump($addressId);
 
         $categoryParams = new CreateCategoryServiceParams(
             $request->category
         );
 
-        if (Category::where('description', $categoryParams->description)->get()->count() > 0) {
-            echo 'categoria já cadastrada ';
-        } else {
-            Category::make($categoryParams);
-            echo "nova categoria criada ";
-        }
-
-        $categoryId = Category::where('description', $categoryParams->description)->get('id')->toArray()[0]['id'];
+        $categoryId = $this->categoryServices->getCategoryId($categoryParams);
         var_dump($categoryId);
 
         $contactParams = new CreateContactServiceParams(
@@ -85,12 +87,8 @@ class ContactController extends Controller
 
         #var_dump($contactParams);
 
-        if (Contact::where('phone', $contactParams->phone)->get()->count() > 0) {
-            echo 'contato já cadastrado ';
-        } else {
-            Contact::make($contactParams);
-            echo 'novo contato cadastrado ';
-        }
+        $message = $this->contactServices->contactExists($contactParams);
+        echo($message);
     }
 
     public function edit(Request $request, $id)

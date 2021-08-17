@@ -3,18 +3,30 @@
 namespace App\Services\Contact;
 
 use App\Model\Contact;
+use App\Repositories\Contact\ContactRepositoryEloquent;
+use App\Services\Params\Contact\CreateContactServiceParams;
 
 class ContactServices
 {
-    public static function contactExists($phone)
-    {
-        $contacts = Contact::all();
+    /**
+     * Inicializa a repository de contacts
+     */
+    protected $contactRepositoryEloquent;
 
-        foreach ($contacts as $contact) {
-            if ($contact['phone'] === $phone) {
-                return $contact['id'];
-            }
-        }
-        return -1;
+    public function __construct(
+        ContactRepositoryEloquent $contactRepositoryEloquent
+    ) {
+        $this->contactRepositoryEloquent = $contactRepositoryEloquent;
+    }
+
+    /**
+     * Verifica se um contato já existe
+     *
+     * @param contact:CreateContactServiceParams
+     * @return message:string
+     */
+    public function contactExists(CreateContactServiceParams $contact)
+    {
+        return $this->contactRepositoryEloquent->verifyContact($contact);
     }
 }

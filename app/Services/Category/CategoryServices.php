@@ -3,25 +3,30 @@
 namespace App\Services\Category;
 
 use App\Model\Category;
+use App\Repositories\Category\CategoryRepositoryEloquent;
+use App\Services\Params\Category\CreateCategoryServiceParams;
 
 class CategoryServices
 {
     /**
+     * Inicializa o repository
+     */
+    protected $categoryRepositoryEloquent;
+
+    public function __construct(
+        CategoryRepositoryEloquent $categoryRepositoryEloquent
+    ) {
+        $this->categoryRepositoryEloquent = $categoryRepositoryEloquent;
+    }
+    /**
      *
      * Pega o id de uma categoria
      *
-     * @param decription:string
+     * @param category:CreateCategoryServiceParams
      * @return id:int
      */
-    public static function getCategoryId($description)
+    public function getCategoryId(CreateCategoryServiceParams $category)
     {
-        $categories = Category::all()->toArray();
-
-        foreach ($categories as $category) {
-            if ($category['description'] === $description) {
-                return $category['id'];
-            }
-        }
-        return -1;
+        return $this->categoryRepositoryEloquent->getCategoryId($category);
     }
 }

@@ -2,10 +2,10 @@
 
 namespace App\Repositories\Contact;
 
+use App\Model\Contact;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
-use App\Repositories\ContactRepository;
-use App\Entities\Contact;
+use App\Repositories\Contact\ContactRepository;
 use App\Services\Params\Contact\CreateContactServiceParams;
 use App\Validators\ContactValidator;
 
@@ -43,6 +43,26 @@ class ContactRepositoryEloquent extends BaseRepository implements ContactReposit
             'id_address' => $contact->id_address,
             'id_category' => $contact->id_category
         ]);
+    }
+
+    /**
+     * Verifica se usuário já foi criado
+     *
+     * @param contact:CreateContactServiceParams
+     * @return string
+     */
+    public function verifyContact(CreateContactServiceParams $contact)
+    {
+        $result = $this->findWhere([
+            'phone' => $contact->phone
+        ]);
+
+        if ($result->count() == 0) {
+            $this->make($contact);
+            return "Novo contato cadastrado";
+        }
+
+        return "Contato já cadastrado";
     }
 
     /**

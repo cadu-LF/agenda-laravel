@@ -6,7 +6,7 @@ use App\Services\Params\BaseServiceParams;
 
 class CreateContactServiceParams extends BaseServiceParams
 {
-    public $fullName;
+    public $fullname;
     public $phone;
     public $email;
     public $note;
@@ -15,7 +15,7 @@ class CreateContactServiceParams extends BaseServiceParams
     public $id_category;
 
     public function __construct(
-        string $fullName,
+        string $fullname,
         string $phone,
         $email,
         $note,
