@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Contact\CreateNewContactRequest;
-use App\Model\Address;
-use App\Model\Category;
 use App\Model\Contact;
 use App\Services\Address\AddressServices;
 use App\Services\Category\CategoryServices;
@@ -65,15 +63,17 @@ class ContactController extends Controller
             $request->country
         );
 
-        $addressId = $this->addressServices->checkAddress($addressParams);
-        var_dump($addressId);
+        $addressResponse = $this->addressServices->createAddress($addressParams);
+        echo $addressResponse->message;
+        var_dump($addressResponse->data->toArray());
 
         $categoryParams = new CreateCategoryServiceParams(
             $request->category
         );
 
-        $categoryId = $this->categoryServices->getCategoryId($categoryParams);
-        var_dump($categoryId);
+        $categoryResponse = $this->categoryServices->createCategory($categoryParams);
+        echo $categoryResponse->message;
+        var_dump($categoryResponse->data->toArray());
 
         $contactParams = new CreateContactServiceParams(
             $request->fullName,
@@ -81,20 +81,24 @@ class ContactController extends Controller
             $request->email,
             $request->note,
             $user->id,
-            $addressId,
-            $categoryId
+            $addressResponse->data->toArray()[0]['id'],
+            $categoryResponse->data->toArray()[0]['id']
         );
 
         #var_dump($contactParams);
 
-        $message = $this->contactServices->contactExists($contactParams);
-        echo($message);
+        $contactResponse = $this->contactServices->createContact($contactParams);
+        if ($contactResponse->success) {
+            echo $contactResponse->message;
+            return redirect('/contatos');
+        } else {
+            echo "Algo deu errado - Tente novamente";
+        }
     }
 
     public function edit(Request $request, $id)
     {
-        // preciso pegar o id no url e filtrar o contato com aquele id
-        $contact = Contact::find($id);
+        $contact = $this->contactServices->getFullContact($id);
 
         return view('contacts.edit', compact('contact'));
     }

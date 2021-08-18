@@ -2,9 +2,9 @@
 
 namespace App\Services\Category;
 
-use App\Model\Category;
-use App\Repositories\Category\CategoryRepositoryEloquent;
+use App\Repositories\CategoryRepositoryEloquent;
 use App\Services\Params\Category\CreateCategoryServiceParams;
+use App\Services\Responses\ServiceResponse;
 
 class CategoryServices
 {
@@ -20,13 +20,35 @@ class CategoryServices
     }
     /**
      *
-     * Pega o id de uma categoria
+     * Cria uma novo categoria caso ainda não exista
      *
      * @param category:CreateCategoryServiceParams
-     * @return id:int
+     * @return ServiceResponse
      */
-    public function getCategoryId(CreateCategoryServiceParams $category)
+    public function createCategory(CreateCategoryServiceParams $category)
     {
-        return $this->categoryRepositoryEloquent->getCategoryId($category);
+        $result = $this->categoryRepositoryEloquent->findWhere([
+            'description' => $category->description
+        ]);
+
+        if ($result->count() == 0) {
+            $this->categoryRepositoryEloquent->create([
+                'description' => $category->description
+            ]);
+
+            return new ServiceResponse(
+                true,
+                "Categoria cadastrada com sucesso",
+                $this->categoryRepositoryEloquent->findWhere([
+                    'description' => $category->description
+                ])
+            );
+        }
+
+        return new ServiceResponse(
+            true,
+            "Categoria já cadastrada",
+            $result
+        );
     }
 }

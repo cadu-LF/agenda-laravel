@@ -2,8 +2,8 @@
 
 namespace App\Services\Address;
 
-use App\Model\Address;
-use App\Repositories\Address\AddressRepositoryEloquent;
+use App\Repositories\AddressRepositoryEloquent;
+use App\Services\Responses\ServiceResponse;
 use App\Services\Params\Address\CreateAddressServiceParams;
 
 class AddressServices
@@ -15,20 +15,53 @@ class AddressServices
      */
     protected $addressRepositoryEloquent;
 
-
     public function __construct(
         AddressRepositoryEloquent $addressRepositoryEloquent
     ) {
         $this->addressRepositoryEloquent = $addressRepositoryEloquent;
     }
+
+
     /**
-     * Pega o id de um endereço de acordo com o cep
+     * cria um novo endereco
      *
-     * @param cep:string
-     * @return int
+     * @param CreateAddressServiceParams
+     * @return ServiceResponse
      */
-    public function checkAddress(CreateAddressServiceParams $address)
+    public function createAddress(CreateAddressServiceParams $address)
     {
-        return $this->addressRepositoryEloquent->getCepId($address);
+        // procura um endereco a partir do cep
+        $result = $this->addressRepositoryEloquent->findWhere([
+            'cep' => $address->cep
+        ]);
+
+        // se não tiver nenhum endereço é cadastrado um novo e retorna o ServiceResponse
+        if ($result->count() == 0) {
+            // cria um novo endereço
+            $this->addressRepositoryEloquent->create([
+                'cep' => $address->cep,
+                'number' => $address->number,
+                'street' => $address->street,
+                'neighborhood' => $address->neighborhood,
+                'city' => $address->city,
+                'state' => $address->state,
+                'country' => $address->country
+            ]);
+
+            //retorna ServiceResponse
+            return new ServiceResponse(
+                true,
+                "Endereço cadastrado com sucesso",
+                $this->addressRepositoryEloquent->findWhere([
+                    'cep' => $address->cep
+                ])
+            );
+        }
+
+        return new ServiceResponse(
+            true,
+            "Endereço já cadastrado",
+            $result
+        );
     }
 }

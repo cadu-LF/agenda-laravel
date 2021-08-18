@@ -8,9 +8,9 @@ class Contact extends Model
 {
     public $fillable = ['fullname', 'phone', 'email', 'note', 'id_user', 'id_address', 'id_category'];
 
-    public function adress()
+    public function address()
     {
-        return $this->hasOne(Adress::class);
+        return $this->hasOne(Address::class);
     }
 
     public function category()
