@@ -38,13 +38,21 @@ class ContactController extends Controller
     }
 
 
-    public function index()
+    public function index(Request $request)
     {
+        $search = $request->query('search');
         $user = Auth::user();
-        $contacts = Contact::where('id_user', $user->id)->get();
+        $contacts = $this->contactServices->getContactByUser($user->id);
+        $contacts = $contacts->data->toArray();
 
+        if ($search != null) {
+            $catId = $this->categoryServices->getCategoryId($search);
+            $filtered = $this->contactServices->filter($catId, $user->id);
+            $filtered = $filtered->data->toArray();
+            $contacts = $filtered;
+        }
 
-        return view('contacts.index', compact('contacts'));
+        return view('contacts.index', compact('contacts', 'search'));
     }
 
 
@@ -118,8 +126,7 @@ class ContactController extends Controller
             $request->category
         );
 
-        $categoryResponse = $this->categoryServices->updateCategory($categoryParams);
-        echo $categoryResponse->message;
+        $this->categoryServices->updateCategory($categoryParams);
 
         $addressParams = new UpdateAddressServiceParams(
             $request->id_address,
@@ -132,8 +139,7 @@ class ContactController extends Controller
             $request->country
         );
 
-        $addressResponse = $this->addressServices->updateAddress($addressParams);
-        echo $addressResponse->message;
+        $this->addressServices->updateAddress($addressParams);
 
         $contactParams = new UpdateContactServiceParams(
             (int) $request->id_contact,
@@ -146,13 +152,13 @@ class ContactController extends Controller
             (int) $request->id_category
         );
 
-        $contactResponse = $this->contactServices->updateContact($contactParams);
-        echo $contactResponse->message;
+        $this->contactServices->updateContact($contactParams);
+        return redirect('/contatos');
     }
 
     public function destroy($id)
     {
-        $response = $this->contactServices->deleteContact($id);
-        echo $response->message;
+        $this->contactServices->deleteContact($id);
+        return redirect('/contatos');
     }
 }

@@ -87,6 +87,25 @@ class ContactServices
     }
 
     /**
+     * Retonar um contato de acordo com o usuário
+     *
+     * @param int
+     * @return ServiceResponse
+     */
+    public function getContactByUser(int $id)
+    {
+        $contacts = $this->contactRepositoryEloquent->findWhere([
+            'id_user' => $id
+        ]);
+
+        return new ServiceResponse(
+            true,
+            "Contatos encontrados",
+            $contacts
+        );
+    }
+
+    /**
      * Atualiza os dados de um contato
      *
      * @param UpdateContactServiceParams
@@ -120,6 +139,27 @@ class ContactServices
             true,
             "Contato deletado com sucesso",
             ''
+        );
+    }
+
+    /**
+     * Filtra contatos por categoria
+     *
+     * @param int
+     * @param int
+     * @return ServiceParams
+     */
+    public function filter(int $category, int $user)
+    {
+        $filtered = $this->contactRepositoryEloquent->findWhere([
+            'id_category' => $category,
+            'id_user' => $user
+        ]);
+
+        return new ServiceResponse(
+            true,
+            'Contatos filtrados por categoria',
+            $filtered
         );
     }
 }

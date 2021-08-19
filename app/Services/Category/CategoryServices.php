@@ -89,4 +89,23 @@ class CategoryServices
             $this->categoryRepositoryEloquent->find($id)
         );
     }
+
+    /**
+     * Pega o id de determinada categoria
+     *
+     * @param string
+     * @return int
+     */
+    public function getCategoryId(string $description)
+    {
+        $category = $this->categoryRepositoryEloquent->findWhere([
+            'description' => $description
+        ]);
+
+        if ($category->count() > 0) {
+            return $category->toArray()[0]['id'];
+        } else {
+            return 0;
+        }
+    }
 }
