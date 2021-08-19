@@ -3,7 +3,9 @@
 namespace App\Services\Contact;
 
 use App\Repositories\ContactRepositoryEloquent;
+use App\Services\Address\AddressServices;
 use App\Services\Params\Contact\CreateContactServiceParams;
+use App\Services\Params\Contact\UpdateContactServiceParams;
 use App\Services\Responses\ServiceResponse;
 
 class ContactServices
@@ -12,11 +14,14 @@ class ContactServices
      * Inicializa a repository de contacts
      */
     protected $contactRepositoryEloquent;
+    protected $addressServices;
 
     public function __construct(
-        ContactRepositoryEloquent $contactRepositoryEloquent
+        ContactRepositoryEloquent $contactRepositoryEloquent,
+        AddressServices $addressServices
     ) {
         $this->contactRepositoryEloquent = $contactRepositoryEloquent;
+        $this->addressServices = $addressServices;
     }
 
     /**
@@ -74,12 +79,30 @@ class ContactServices
     public function getFullContact(int $id)
     {
         $contact = $this->contactRepositoryEloquent->find($id);
-        var_dump($contact->address());
-        exit();
         return new ServiceResponse(
             true,
             "Contato encontrado",
             $contact
+        );
+    }
+
+    /**
+     * Atualiza os dados de um contato
+     *
+     * @param UpdateContactServiceParams
+     * @return ServiceResponse
+     */
+    public function updateContact(UpdateContactServiceParams $contact)
+    {
+        $id = $contact->id_contact;
+        $contact = $contact->toArray();
+
+        $this->contactRepositoryEloquent->update($contact, $id);
+
+        return new ServiceResponse(
+            true,
+            "Contato cadastrado com sucesso",
+            $this->contactRepositoryEloquent->find($id)
         );
     }
 }

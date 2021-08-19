@@ -27,7 +27,7 @@ class CreateNewCategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            'description' => 'nullable'
+            'description' => 'required'
         ];
     }
 
@@ -39,7 +39,13 @@ class CreateNewCategoryRequest extends FormRequest
     public function filters()
     {
         return [
-            'description' => 'trim'
+        ];
+    }
+
+    public function messages()
+    {
+        return[
+            'description.required' => 'É preciso informar a categoria do contato'
         ];
     }
 }

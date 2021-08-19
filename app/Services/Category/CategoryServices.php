@@ -2,9 +2,10 @@
 
 namespace App\Services\Category;
 
+use App\Services\Responses\ServiceResponse;
 use App\Repositories\CategoryRepositoryEloquent;
 use App\Services\Params\Category\CreateCategoryServiceParams;
-use App\Services\Responses\ServiceResponse;
+use App\Services\Params\Category\UpdateCategoryServiceParams;
 
 class CategoryServices
 {
@@ -49,6 +50,43 @@ class CategoryServices
             true,
             "Categoria já cadastrada",
             $result
+        );
+    }
+
+    /**
+     * Retorna uma categoria
+     *
+     * @param int
+     * @return ServiceResponse
+     */
+    public function getCategory(int $id)
+    {
+        $category = $this->categoryRepositoryEloquent->find($id);
+
+        return new ServiceResponse(
+            true,
+            "Categoria encontrada",
+            $category
+        );
+    }
+
+    /**
+     * Atualiza uma categoria
+     *
+     * @param UpdateCategoryServiceParams
+     * @return ServiceResponse
+     */
+    public function updateCategory(UpdateCategoryServiceParams $category)
+    {
+        $id = $category->id_category;
+        $category = $category->toArray();
+
+        $this->categoryRepositoryEloquent->update($category, $id);
+
+        return new ServiceResponse(
+            true,
+            'Categoria atualizada com sucesso',
+            $this->categoryRepositoryEloquent->find($id)
         );
     }
 }

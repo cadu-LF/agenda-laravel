@@ -2,16 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Contact\CreateNewContactRequest;
 use App\Model\Contact;
-use App\Services\Address\AddressServices;
-use App\Services\Category\CategoryServices;
-use App\Services\Contact\ContactServices;
-use App\Services\Params\Address\CreateAddressServiceParams;
-use App\Services\Params\Category\CreateCategoryServiceParams;
-use App\Services\Params\Contact\CreateContactServiceParams;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Services\Address\AddressServices;
+use App\Services\Contact\ContactServices;
+use App\Services\Category\CategoryServices;
+use App\Http\Requests\Contact\UpdateContactRequest;
+use App\Http\Requests\Contact\CreateNewContactRequest;
+use App\Services\Params\Address\CreateAddressServiceParams;
+use App\Services\Params\Address\UpdateAddressServiceParams;
+use App\Services\Params\Contact\CreateContactServiceParams;
+use App\Services\Params\Category\CreateCategoryServiceParams;
+use App\Services\Params\Category\UpdateCategoryServiceParams;
+use App\Services\Params\Contact\UpdateContactServiceParams;
 
 class ContactController extends Controller
 {
@@ -99,7 +103,50 @@ class ContactController extends Controller
     public function edit(Request $request, $id)
     {
         $contact = $this->contactServices->getFullContact($id);
+        $address = $this->addressServices->getAddress($contact->data->toArray()['id_address']);
+        $category = $this->categoryServices->getCategory($contact->data->toArray()['id_category']);
+        return view('contacts.edit', compact('contact', 'address', 'category'));
+    }
 
-        return view('contacts.edit', compact('contact'));
+    public function update(
+        UpdateContactRequest $request
+    ) {
+        $user = Auth::user();
+
+        $categoryParams = new UpdateCategoryServiceParams(
+            $request->id_category,
+            $request->category
+        );
+
+        $categoryResponse = $this->categoryServices->updateCategory($categoryParams);
+        echo $categoryResponse->message;
+
+        $addressParams = new UpdateAddressServiceParams(
+            $request->id_address,
+            $request->cep,
+            $request->number,
+            $request->street,
+            $request->neighborhood,
+            $request->city,
+            $request->state,
+            $request->country
+        );
+
+        $addressResponse = $this->addressServices->updateAddress($addressParams);
+        echo $addressResponse->message;
+
+        $contactParams = new UpdateContactServiceParams(
+            (int) $request->id_contact,
+            $request->fullname,
+            $request->phone,
+            $request->email,
+            $request->note,
+            $user->id,
+            (int) $request->id_address,
+            (int) $request->id_category
+        );
+
+        $contactResponse = $this->contactServices->updateContact($contactParams);
+        echo $contactResponse->message;
     }
 }

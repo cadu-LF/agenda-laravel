@@ -10,7 +10,7 @@ class Address extends Model
 
     public function contacts()
     {
-        return $this->hasMany(Contact::class);
+        return $this->belongsToMany(Contact::class);
     }
 
     public static function make($params)

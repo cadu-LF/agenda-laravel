@@ -2,9 +2,10 @@
 
 namespace App\Services\Address;
 
-use App\Repositories\AddressRepositoryEloquent;
 use App\Services\Responses\ServiceResponse;
+use App\Repositories\AddressRepositoryEloquent;
 use App\Services\Params\Address\CreateAddressServiceParams;
+use App\Services\Params\Address\UpdateAddressServiceParams;
 
 class AddressServices
 {
@@ -62,6 +63,43 @@ class AddressServices
             true,
             "Endereço já cadastrado",
             $result
+        );
+    }
+
+    /**
+     * Retorna um endereço de acordo com o id
+     *
+     * @param int
+     * @return ServiceResponse
+     */
+    public function getAddress(int $id)
+    {
+        $address = $this->addressRepositoryEloquent->find($id);
+        return new ServiceResponse(
+            true,
+            "Endereço encontrado",
+            $address
+        );
+    }
+
+    /**
+     * Atualiza os dados de um endereço
+     *
+     * @param UpdateAddressServiceParams
+     *
+     * @return ServiceResponse
+     */
+    public function updateAddress(UpdateAddressServiceParams $address)
+    {
+        $id = $address->id_address;
+        $address = $address->toArray();
+
+        $this->addressRepositoryEloquent->update($address, $id);
+
+        return new ServiceResponse(
+            true,
+            "Endereço Atualizado com sucesso",
+            $this->addressRepositoryEloquent->find($id)
         );
     }
 }

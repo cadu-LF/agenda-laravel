@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Contact;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Waavi\Sanitizer\Laravel\SanitizesInput;
 
-class CreateNewAddressRequest extends FormRequest
+class UpdateContactRequest extends FormRequest
 {
     use SanitizesInput;
 
@@ -21,12 +21,20 @@ class CreateNewAddressRequest extends FormRequest
 
     /**
      *  Validation rules to be applied to the input.
-     *
+     * 4,5 -> 5,5 -> 6,5
      *  @return array
      */
     public function rules()
     {
         return [
+            'id_contact' => 'required',
+            'fullname' => 'required',
+            'phone' => 'required',
+            'email' => 'nullable',
+            'note' => 'nullable',
+            'id_category' => 'required',
+            'category' => 'required',
+            'id_address' => 'required',
             'cep' => 'required|min:8|max:8',
             'number' => 'required',
             'street' => 'required',
@@ -45,6 +53,8 @@ class CreateNewAddressRequest extends FormRequest
     public function filters()
     {
         return [
+            'phone' => 'trim',
+            'email' => 'trim',
             'cep' => 'trim'
         ];
     }
@@ -56,7 +66,12 @@ class CreateNewAddressRequest extends FormRequest
      */
     public function messages()
     {
-        return[
+        return [
+            'fullName.required' => 'É preciso inserir um nome',
+            'phone.required' => 'É preciso inserir um telefone',
+            'id_category' => 'id_category needded',
+            'description.required' => 'É preciso informar a categoria do contato',
+            'id_address' => 'id_address needded',
             'cep.required' => 'O campo CEP deve ser informado',
             'number.required' => 'É preciso informar o número da casa do contato',
             'country.required' => 'É preciso informar o país do contato'
