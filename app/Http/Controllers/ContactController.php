@@ -149,4 +149,10 @@ class ContactController extends Controller
         $contactResponse = $this->contactServices->updateContact($contactParams);
         echo $contactResponse->message;
     }
+
+    public function destroy($id)
+    {
+        $response = $this->contactServices->deleteContact($id);
+        echo $response->message;
+    }
 }

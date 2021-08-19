@@ -105,4 +105,21 @@ class ContactServices
             $this->contactRepositoryEloquent->find($id)
         );
     }
+
+    /**
+     * Deleta um contato do banco
+     *
+     * @param int
+     * @return ServiceResponse
+     */
+    public function deleteContact(int $id)
+    {
+        $this->contactRepositoryEloquent->delete($id);
+
+        return new ServiceResponse(
+            true,
+            "Contato deletado com sucesso",
+            ''
+        );
+    }
 }

@@ -26,6 +26,13 @@ Lista de contatos
                 <a href="contatos/{{$contact->id}}/edit">{{$contact->fullname}}</a>
                 <a href="contatos/{{$contact->id}}/edit">{{$contact->phone}}</a>
                 <a href="contatos/{{$contact->id}}/edit">{{$contact->id_category}}</a>
+                <form action="{{route('contatos.destroy', $contact->id)}}" method='post'>
+                    @method('DELETE')
+                    @csrf
+                    <button class='btn btn-danger' type='submit'>
+                        Deletar contato: {{$contact->fullname}}
+                    </button>
+                </form>
             </li>
         @endforeach
     </ul>
