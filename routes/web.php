@@ -18,3 +18,9 @@ Auth::routes();
 // Contacts Routes
 Route::resource('/contatos', 'ContactController')->middleware('auth');
 #Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/export/pdf', 'ContactController@mostraPdf')->middleware('auth')->name('contatos.pdf');
+Route::get('/export/excel', 'ContactController@downExcel')->middleware('auth')->name('contatos.excel');
+
+Route::get('/import/contacts', 'PeopleApiController@import')->middleware('auth')->name('import.contacts');
+Route::get('/import', 'PeopleApiController@importCode')->middleware('auth');

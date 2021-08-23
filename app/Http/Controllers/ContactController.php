@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Model\Contact;
+use PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Address\AddressServices;
@@ -16,6 +16,7 @@ use App\Services\Params\Contact\CreateContactServiceParams;
 use App\Services\Params\Category\CreateCategoryServiceParams;
 use App\Services\Params\Category\UpdateCategoryServiceParams;
 use App\Services\Params\Contact\UpdateContactServiceParams;
+use Illuminate\Support\Facades\App;
 
 class ContactController extends Controller
 {
@@ -40,10 +41,14 @@ class ContactController extends Controller
 
     public function index(Request $request)
     {
+        // exemplo de pdf -> adminController -> relatorioUsuariosPadrao
+        // exemplo excel
         $search = $request->query('search');
         $user = Auth::user();
         $contacts = $this->contactServices->getContactByUser($user->id);
         $contacts = $contacts->data->toArray();
+
+        $categories = $this->categoryServices->getAllCategories();
 
         if ($search != null) {
             $catId = $this->categoryServices->getCategoryId($search);
@@ -52,7 +57,7 @@ class ContactController extends Controller
             $contacts = $filtered;
         }
 
-        return view('contacts.index', compact('contacts', 'search'));
+        return view('contacts.index', compact('contacts', 'search', 'categories'));
     }
 
 
@@ -64,7 +69,7 @@ class ContactController extends Controller
     public function store(CreateNewContactRequest $request)
     {
         $user = Auth::user();
-
+        dump($request->description);
         $addressParams = new CreateAddressServiceParams(
             $request->cep,
             $request->number,
@@ -76,16 +81,12 @@ class ContactController extends Controller
         );
 
         $addressResponse = $this->addressServices->createAddress($addressParams);
-        echo $addressResponse->message;
-        var_dump($addressResponse->data->toArray());
 
         $categoryParams = new CreateCategoryServiceParams(
-            $request->category
+            $request->description
         );
 
         $categoryResponse = $this->categoryServices->createCategory($categoryParams);
-        echo $categoryResponse->message;
-        var_dump($categoryResponse->data->toArray());
 
         $contactParams = new CreateContactServiceParams(
             $request->fullName,
@@ -97,7 +98,6 @@ class ContactController extends Controller
             $categoryResponse->data->toArray()[0]['id']
         );
 
-        #var_dump($contactParams);
 
         $contactResponse = $this->contactServices->createContact($contactParams);
         if ($contactResponse->success) {
@@ -111,35 +111,76 @@ class ContactController extends Controller
     public function edit(Request $request, $id)
     {
         $contact = $this->contactServices->getFullContact($id);
-        $address = $this->addressServices->getAddress($contact->data->toArray()['id_address']);
-        $category = $this->categoryServices->getCategory($contact->data->toArray()['id_category']);
+        $contact = $contact->data->toArray();
+
+        $address = null;
+        $category = null;
+
+        if ($contact['id_address'] != null) {
+            $address = $this->addressServices->getAddress($contact['id_address']);
+            $address = $address->data->toArray();
+        }
+
+        if ($contact['id_category'] != null) {
+            $category = $this->categoryServices->getCategory($contact['id_category']);
+            $category = $category->data->toArray();
+        }
         return view('contacts.edit', compact('contact', 'address', 'category'));
     }
 
     public function update(
         UpdateContactRequest $request
     ) {
+
         $user = Auth::user();
 
-        $categoryParams = new UpdateCategoryServiceParams(
-            $request->id_category,
-            $request->category
-        );
+        $categoryId = '';
+        if ($request->id_category == null) {
+            $categoryParams = new CreateCategoryServiceParams(
+                $request->category
+            );
 
-        $this->categoryServices->updateCategory($categoryParams);
+            $categoryResponse = $this->categoryServices->createCategory($categoryParams);
+            $categoryId = $categoryResponse->data->toArray()[0]['id'];
+        } else {
+            $categoryParams = new UpdateCategoryServiceParams(
+                $request->id_category,
+                $request->category
+            );
 
-        $addressParams = new UpdateAddressServiceParams(
-            $request->id_address,
-            $request->cep,
-            $request->number,
-            $request->street,
-            $request->neighborhood,
-            $request->city,
-            $request->state,
-            $request->country
-        );
+            $categoryResponse = $this->categoryServices->updateCategory($categoryParams);
+            $categoryId = $categoryResponse->data->toArray()['id'];
+        }
 
-        $this->addressServices->updateAddress($addressParams);
+        $addressId = '';
+        if ($request->id_address == null) {
+            $addressParams = new CreateAddressServiceParams(
+                $request->cep,
+                $request->number,
+                $request->street,
+                $request->neighborhood,
+                $request->city,
+                $request->state,
+                $request->country
+            );
+
+            $addressResponse = $this-> addressServices->createAddress($addressParams);
+            $addressId = $addressResponse->data->toArray()[0]['id'];
+        } else {
+            $addressParams = new UpdateAddressServiceParams(
+                $request->id_address,
+                $request->cep,
+                $request->number,
+                $request->street,
+                $request->neighborhood,
+                $request->city,
+                $request->state,
+                $request->country
+            );
+
+            $addressResponse = $this->addressServices->updateAddress($addressParams);
+            $addressId = $addressResponse->data->toArray()['id'];
+        }
 
         $contactParams = new UpdateContactServiceParams(
             (int) $request->id_contact,
@@ -148,8 +189,8 @@ class ContactController extends Controller
             $request->email,
             $request->note,
             $user->id,
-            (int) $request->id_address,
-            (int) $request->id_category
+            (int) $categoryId,
+            (int) $addressId
         );
 
         $this->contactServices->updateContact($contactParams);
@@ -160,5 +201,22 @@ class ContactController extends Controller
     {
         $this->contactServices->deleteContact($id);
         return redirect('/contatos');
+    }
+
+    public function mostraPdf()
+    {
+        $user = Auth::user();
+        $contacts = $this->contactServices->getContactByUser($user->id);
+        $contacts = $contacts->data->toArray();
+
+        $pdf = App::make('snappy.pdf.wrapper');
+        $view = view('templates.pdf', compact('contacts'));
+        $pdf->loadHTML($view);
+        return $pdf->inline();
+    }
+
+    public function downExcel()
+    {
+        return Excel::download();
     }
 }

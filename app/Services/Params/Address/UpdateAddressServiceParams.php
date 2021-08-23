@@ -16,7 +16,7 @@ class UpdateAddressServiceParams extends BaseServiceParams
     public $country;
 
     public function __construct(
-        int $id_address,
+        $id_address,
         string $cep,
         int $number,
         string $street,

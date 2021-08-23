@@ -26,7 +26,7 @@ Criar novo contato
                                     ])
     @include('components.form-group', ['labelName' => 'Categoria',
                                         'type' => 'text',
-                                        'name' => 'category'])
+                                        'name' => 'description'])
     <div class='mb-3'>
         <label class='form-label'>CEP</label>
         <input

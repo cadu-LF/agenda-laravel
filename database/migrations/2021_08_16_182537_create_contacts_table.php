@@ -23,10 +23,10 @@ class CreateContactsTable extends Migration
             $table->unsignedBigInteger('id_user');
             $table->foreign('id_user')->references('id')->on('users');
 
-            $table->unsignedBigInteger('id_address');
+            $table->unsignedBigInteger('id_address')->nullable();
             $table->foreign('id_address')->references('id')->on('addresses');
 
-            $table->unsignedBigInteger('id_category');
+            $table->unsignedBigInteger('id_category')->nullable();
             $table->foreign('id_category')->references('id')->on('categories');
 
             $table->timestamps();

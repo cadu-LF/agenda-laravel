@@ -108,4 +108,15 @@ class CategoryServices
             return 0;
         }
     }
+
+    /**
+     * Pega todas as categorias
+     *
+     * @return
+     */
+    public function getAllCategories()
+    {
+        $categories = $this->categoryRepositoryEloquent->all();
+        return $categories->toArray();
+    }
 }

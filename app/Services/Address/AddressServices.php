@@ -93,7 +93,6 @@ class AddressServices
     {
         $id = $address->id_address;
         $address = $address->toArray();
-
         $this->addressRepositoryEloquent->update($address, $id);
 
         return new ServiceResponse(

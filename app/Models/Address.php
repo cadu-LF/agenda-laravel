@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Address extends Model
 {
-    public $fillable = ['cep', 'street', 'neighborhood', 'city', 'state', 'country'];
+    public $fillable = ['cep', 'number', 'street', 'neighborhood', 'city', 'state', 'country'];
 
     public function contacts()
     {

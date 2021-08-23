@@ -9,10 +9,13 @@
     "license": "MIT",
     "require": {
         "php": "^7.2",
+        "barryvdh/laravel-snappy": "^0.4.8",
         "doctrine/dbal": "^3.1",
         "fideloper/proxy": "^4.0",
+        "google/apiclient": "^2.10",
         "laravel/framework": "^6.0",
         "laravel/tinker": "^1.0",
+        "maatwebsite/excel": "^3.1",
         "prettus/l5-repository": "^2.7",
         "waavi/sanitizer": "^1.0"
     },

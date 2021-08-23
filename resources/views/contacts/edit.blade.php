@@ -1,18 +1,18 @@
 @extends('layout')
 
 @section('headding')
-Editar Contato {{$contact->data->fullname}}
+Editar Contato {{$contact['fullname']}}
 @endsection
 
 @include('components.alert', ['errors', $errors ])
 @section('content')
-<form action="{{ route('contatos.update', $contact->data->id) }}" method='post'>
+<form action="{{ route('contatos.update', $contact['id']) }}" method='post'>
     @method('PUT')
     @csrf
 
     <input
         hidden
-        value="{{$contact->data->id}}"
+        value="{{$contact['id']}}"
         name='id_contact'
     />
 
@@ -20,7 +20,7 @@ Editar Contato {{$contact->data->fullname}}
         <label class='form-label'>Nome</label>
         <input
             class='form-control'
-            value={{$contact->data->fullname}}
+            value={{$contact['fullname']}}
             name='fullname'
             type='text'
         />
@@ -29,33 +29,24 @@ Editar Contato {{$contact->data->fullname}}
         <label class='form-label'>Telefone</label>
         <input
             class='form-control'
-            value="{{$contact->data->phone}}"
+            value="{{$contact['phone']}}"
             name='phone'
             type='text'
         />
     </div>
     <div class='mb-3'>
         <label class='form-label'>Anotação</label>
-        @if($contact->data->note == null)
-            <input
-                class='form-control'
-                value=''
-                name='note'
-                type='text'
-            />
-        @else
-            <input
-                class='form-control'
-                value="{{$contact->data->note}}"
-                name='note'
-                type='text'
-            />
-        @endif
+        <input
+            class='form-control'
+            value="{{$contact['note']}}"
+            name='note'
+            type='text'
+        />
     </div>
 
     <input
         hidden
-        value="{{$contact->data->id_category}}"
+        value="{{$contact['id_category']}}"
         name='id_category'
     />
 
@@ -63,7 +54,7 @@ Editar Contato {{$contact->data->fullname}}
         <label class='form-label'>Categoria</label>
         <input
             class='form-control'
-            value="{{$category->data->description}}"
+            value="{{$category['description']}}"
             name='category'
             type='text'
         />
@@ -71,44 +62,47 @@ Editar Contato {{$contact->data->fullname}}
 
     <input
         hidden
-        value="{{$contact->data->id_address}}"
+        value="{{$contact['id_address']}}"
         name='id_address'
     />
 
     <div class='mb-3'>
         <label class='form-label'>CEP</label>
+        @if($address['cep'] != null)
         <input
             class='form-control'
             type='text'
-            value={{$address->data->cep}}
+            value={{$address['cep']}}
             onblur="pesquisacep(this.value);"
             name='cep'
             id='cep'
         />
-    </div>
-    <div class='mb-3'>
-        <label class='form-label'>Número</label>
-        @if($address->data->number == null)
-        <input
-            class='form-control'
-            value=''
-            name='number'
-            type="number"
-        />
         @else
         <input
             class='form-control'
-            value={{$address->data->number}}
-            name='number'
-            type="number"
+            type='text'
+            value=''
+            onblur="pesquisacep(this.value);"
+            name='cep'
+            id='cep'
         />
         @endif
+    </div>
+    <div class='mb-3'>
+        <label class='form-label'>Número</label>
+        <input
+            class='form-control'
+            value="{{$address['number']}}"
+            name='number'
+            id='number'
+            type="number"
+        />
     </div>
     <div class='mb-3'>
         <label class='form-label'>Rua</label>
         <input
             class='form-control'
-            value="{{$address->data->street}}"
+            value="{{$address['street']}}"
             name='street'
             id='rua'
             type='text'
@@ -118,7 +112,7 @@ Editar Contato {{$contact->data->fullname}}
         <label class='form-label'>Bairro</label>
         <input
             class='form-control'
-            value="{{$address->data->neighborhood}}"
+            value="{{$address['neighborhood']}}"
             name='neighborhood'
             id='bairro'
             type='text'
@@ -128,7 +122,7 @@ Editar Contato {{$contact->data->fullname}}
         <label class='form-label'>Cidade</label>
         <input
             class='form-control'
-            value="{{$address->data->city}}"
+            value="{{$address['city']}}"
             name='city'
             id='cidade'
             type='text'
@@ -138,7 +132,7 @@ Editar Contato {{$contact->data->fullname}}
         <label class='form-label'>Estado</label>
         <input
             class='form-control'
-            value="{{$address->data->state}}"
+            value="{{$address['state']}}"
             name='state'
             id='uf'
             type='text'
@@ -146,7 +140,7 @@ Editar Contato {{$contact->data->fullname}}
     </div>
     <div class='mb-3'>
         <label class='form-label'>País</label>
-        @if($address->data->country == null)
+        @if($address['country'] == null)
         <input
             class='form-control'
             value=""
@@ -156,7 +150,7 @@ Editar Contato {{$contact->data->fullname}}
         @else
         <input
             class='form-control'
-            value="{{$address->data->country}}"
+            value="{{$address['country']}}"
             name='country'
             type='text'
         />

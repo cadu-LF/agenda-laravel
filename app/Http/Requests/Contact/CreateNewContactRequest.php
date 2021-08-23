@@ -30,7 +30,15 @@ class CreateNewContactRequest extends FormRequest
             'fullName' => 'required',
             'phone' => 'required',
             'email' => 'nullable',
-            'note' => 'nullable'
+            'note' => 'nullable',
+            'description' => 'required',
+            'cep' => 'required|min:8|max:8',
+            'number' => 'required',
+            'street' => 'required',
+            'neighborhood' => 'required',
+            'city' => 'required',
+            'state' => 'required',
+            'country' => 'required'
         ];
     }
 
@@ -43,7 +51,8 @@ class CreateNewContactRequest extends FormRequest
     {
         return [
             'phone' => 'trim',
-            'email' => 'trim'
+            'email' => 'trim',
+            'cep' => 'trim'
         ];
     }
 
@@ -56,7 +65,15 @@ class CreateNewContactRequest extends FormRequest
     {
         return [
             'fullName.required' => 'É preciso inserir um nome',
-            'phone.required' => 'É preciso inserir um telefone'
+            'phone.required' => 'É preciso inserir um telefone',
+            'description.required' => 'É preciso informar a categoria do contato',
+            'cep.required' => 'O campo CEP deve ser informado',
+            'number.required' => 'É preciso informar o número da casa do contato',
+            'street.required' => 'É preciso informar o nome da rua do contato',
+            'neighborhood.required' => 'É preciso informar o nome do bairro do contato',
+            'city.required' => 'É preciso informar a cidade do contato',
+            'state.required' => 'É preciso informar o estado do contato',
+            'country.required' => 'É preciso informar o país do contato'
         ];
     }
 }

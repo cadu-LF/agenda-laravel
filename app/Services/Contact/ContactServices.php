@@ -30,7 +30,7 @@ class ContactServices
      * @param contact:CreateContactServiceParams
      * @return ServiceResponse
      */
-    public function createContact(CreateContactServiceParams $contact)
+    public function createContact($contact)
     {
         // procura se existe algum telefone com o numero passado  ligado ao usuário cadastrado
         $result = $this->contactRepositoryEloquent->findWhere([

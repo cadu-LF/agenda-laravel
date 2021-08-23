@@ -10,7 +10,7 @@ class UpdateCategoryServiceParams extends BaseServiceParams
     public $description;
 
     public function __construct(
-        int $id_category,
+        $id_category,
         string $description
     ) {
         parent::__construct();
