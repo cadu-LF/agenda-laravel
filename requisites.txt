@@ -1,13 +1,19 @@
 Requisitos:
 
--> Cadastrar novo contato, usando AJAX(axio) e HTML Submit (feito)
--> Buscar endereço pelo CEP(usar API dos Correios) (feito)
--> Enviar notificação por email de forma assíncrona
--> Categorização (feito)
--> Sugestão quando for feita a busca de contatos
--> Autenticação(validação no login) (feito)
--> funcionar desktop e mobile (feito)
--> Formulários devem ser validados no front e back (feito)
--> importar contatos de uma API(Google contats)(EXTRA)
--> Enviar link do repo do github (feito)
+FEITOS:
+    -> Cadastrar novo contato, usando AJAX(axio) e HTML Submit (feito)
+    -> Buscar endereço pelo CEP(usar API dos Correios) (feito)
+    -> Autenticação(validação no login) (feito)
+    -> funcionar desktop e mobile (feito)
+    -> Formulários devem ser validados no front e back (feito)
+    -> importar contatos de uma API(Google contats)(feito)
+    -> Enviar link do repo do github (feito)
+    -> Exportar lista de contatos em Excel (feito)
+    -> Gerar PDF de contatos (feito)
+    -> Categorização (feito)
 
+A FAZER:
+    -> Enviar notificação por email de forma assíncrona
+    -> Sugestão quando for feita a busca de contatos
+    -> Enviar notificação via OneSignal
+    -> Criar API da agenda e consumir via Postman

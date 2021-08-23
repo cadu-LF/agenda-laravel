@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ContactsExport;
 use PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,6 +18,7 @@ use App\Services\Params\Category\CreateCategoryServiceParams;
 use App\Services\Params\Category\UpdateCategoryServiceParams;
 use App\Services\Params\Contact\UpdateContactServiceParams;
 use Illuminate\Support\Facades\App;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ContactController extends Controller
 {
@@ -217,6 +219,6 @@ class ContactController extends Controller
 
     public function downExcel()
     {
-        return Excel::download();
+        return Excel::download(new ContactsExport(), 'contacts.xls');
     }
 }
