@@ -11,9 +11,9 @@ FEITOS:
     -> Exportar lista de contatos em Excel (feito)
     -> Gerar PDF de contatos (feito)
     -> Categorização (feito)
+    -> Enviar notificação via OneSignal (feito)
+    -> Criar API da agenda e consumir via Postman (feito)
 
 A FAZER:
     -> Enviar notificação por email de forma assíncrona
     -> Sugestão quando for feita a busca de contatos
-    -> Enviar notificação via OneSignal
-    -> Criar API da agenda e consumir via Postman

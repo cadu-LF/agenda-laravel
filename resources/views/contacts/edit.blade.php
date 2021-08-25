@@ -35,6 +35,15 @@ Editar Contato {{$contact['fullname']}}
         />
     </div>
     <div class='mb-3'>
+        <label class='form-label'>Email</label>
+        <input
+            class='form-control'
+            value="{{$contact['email']}}"
+            name='email'
+            type='email'
+        />
+    </div>
+    <div class='mb-3'>
         <label class='form-label'>Anotação</label>
         <input
             class='form-control'

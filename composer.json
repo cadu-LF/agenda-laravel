@@ -10,9 +10,12 @@
     "require": {
         "php": "^7.2",
         "barryvdh/laravel-snappy": "^0.4.8",
+        "berkayk/onesignal-laravel": "^1.0",
         "doctrine/dbal": "^3.1",
         "fideloper/proxy": "^4.0",
         "google/apiclient": "^2.10",
+        "guzzlehttp/guzzle": "^7.3",
+        "ladumor/one-signal": "0.4.0",
         "laravel/framework": "^6.0",
         "laravel/tinker": "^1.0",
         "maatwebsite/excel": "^3.1",

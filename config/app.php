@@ -168,6 +168,7 @@ return [
         Barryvdh\Snappy\ServiceProvider::class,
         Prettus\Repository\Providers\RepositoryServiceProvider::class,
         Waavi\Sanitizer\Laravel\SanitizerServiceProvider::class,
+        Ladumor\OneSignal\OneSignalServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -231,6 +232,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'PDF' => Barryvdh\Snappy\Facades\SnappyPdf::class,
         'SnappyImage' => Barryvdh\Snappy\Facades\SnappyImage::class,
+        'OneSignal' => \Ladumor\OneSignal\OneSignal::class,
 
 
     ],

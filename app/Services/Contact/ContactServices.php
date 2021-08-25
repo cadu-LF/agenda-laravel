@@ -162,4 +162,14 @@ class ContactServices
             $filtered
         );
     }
+
+    /**
+     * Retona todos os contatos
+     *
+     * @return Collection
+     */
+    public function getAllContacts()
+    {
+        return $this->contactRepositoryEloquent->all();
+    }
 }

@@ -167,6 +167,7 @@ class ContactController extends Controller
             );
 
             $addressResponse = $this-> addressServices->createAddress($addressParams);
+            dump($addressResponse->data->toArray());
             $addressId = $addressResponse->data->toArray()[0]['id'];
         } else {
             $addressParams = new UpdateAddressServiceParams(
@@ -191,8 +192,8 @@ class ContactController extends Controller
             $request->email,
             $request->note,
             $user->id,
-            (int) $categoryId,
-            (int) $addressId
+            (int) $addressId,
+            (int) $categoryId
         );
 
         $this->contactServices->updateContact($contactParams);
