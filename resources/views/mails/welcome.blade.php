@@ -10,7 +10,7 @@
 </head>
 <body>
     <div class='container'>
-        <h1>Olá {{$userName}}</h1>
+        <h1>Olá usuário</h1>
         <p>
             Seja bem vindo ao gerenciador de contatos!
         </p>

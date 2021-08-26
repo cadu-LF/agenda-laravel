@@ -13,15 +13,13 @@ class Welcome extends Mailable
     use Queueable;
     use SerializesModels;
 
-    protected $user;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(Auth $auth)
+    public function __construct()
     {
-        $this->user = $auth::user();
     }
 
     /**
@@ -31,9 +29,6 @@ class Welcome extends Mailable
      */
     public function build()
     {
-        return $this->view('view.name')
-                    ->with([
-                        'username' => $this->user->name
-                    ]);
+        return $this->view('mails.welcome');
     }
 }
