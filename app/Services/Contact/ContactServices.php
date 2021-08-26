@@ -172,4 +172,19 @@ class ContactServices
     {
         return $this->contactRepositoryEloquent->all();
     }
+
+    /**
+     * Retorna os contatos com o nome
+     *
+     * @param string
+     * @return Contact
+     */
+    public function getContactByName(string $name)
+    {
+        $contact = $this->contactRepositoryEloquent->findWhere([
+            'fullname' => $name
+        ]);
+        dd($contact);
+        return $contact;
+    }
 }

@@ -222,4 +222,10 @@ class ContactController extends Controller
     {
         return Excel::download(new ContactsExport(), 'contacts.xls');
     }
+
+    public function autocomplete(Request $request)
+    {
+        $contact = Contact::select('fullname')->where('fullname', 'LIKE', "%{request->terms}%")->get;
+        return response()->json($contact);
+    }
 }
