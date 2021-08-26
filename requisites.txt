@@ -13,7 +13,7 @@ FEITOS:
     -> Categorização (feito)
     -> Enviar notificação via OneSignal (feito)
     -> Criar API da agenda e consumir via Postman (feito)
+    -> Enviar notificação por email de forma assíncrona(feito)
 
 A FAZER:
-    -> Enviar notificação por email de forma assíncrona
     -> Sugestão quando for feita a busca de contatos

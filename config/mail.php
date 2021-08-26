@@ -16,7 +16,7 @@ return [
     |
     */
 
-    'driver' => "mailgun",
+    'driver' => env('MAIL_DRIVER', 'smtp'),
 
     /*
     |--------------------------------------------------------------------------
@@ -56,13 +56,13 @@ return [
     */
 
     'from' => [
-        'address' => 'celourenco312@gmail.com', #env('MAIL_FROM_ADDRESS', 'hello@example.com'),
-        'name' => 'Agenda de Contatos'#env('MAIL_FROM_NAME', 'Example'),
+        'address' => env('MAIL_USERNAME'),
+        'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 
     'repy_to' => [
-        'address' => 'celourenco312@gmail.com', #env('MAIL_FROM_ADDRESS', 'hello@example.com'),
-        'name' => 'Agenda de Contatos'#env('MAIL_FROM_NAME', 'Example'),
+        'address' => env('MAIL_USERNAME'),
+        'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 
     /*

@@ -29,6 +29,7 @@ class Welcome extends Mailable
      */
     public function build()
     {
-        return $this->view('mails.welcome');
+        $config = $this->from('celourenco312@gmail.com')->view('mails.welcome');
+        return $config;
     }
 }

@@ -12,6 +12,9 @@
 */
 
 // Login Routes
+
+use App\Mail\Welcome;
+
 Route::resource('/login', 'LoginController');
 
 Auth::routes();
@@ -26,3 +29,7 @@ Route::get('/import/contacts', 'PeopleApiController@import')->middleware('auth')
 Route::get('/import', 'PeopleApiController@importCode')->middleware('auth');
 
 Route::get('/', 'WelcomeController@index');
+
+Route::get('/email', function () {
+    return new Welcome();
+});
