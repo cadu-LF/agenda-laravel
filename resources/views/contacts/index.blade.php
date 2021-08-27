@@ -70,7 +70,7 @@ Lista de contatos {{$search}}
         @foreach ($contacts as $contact)
             <li class='list-group-item mb-1 d-flex justify-content-between'>
                 <a href="contatos/{{$contact['id']}}/edit">{{$contact['fullname']}}</a>
-                <a href="contatos/{{$contact['id']}}/edit">{{$contact['phone']}}</a>
+                <a href="contatos/{{$contact['id']}}/edit" id='phone'>{{$contact['phone']}}</a>
                 @if($contact['id_category'] > 0)
                     <a href="contatos/{{$contact['id']}}/edit">{{$categories[$contact['id_category'] - 1 ]['description']}}</a>
                 @endif
@@ -111,5 +111,29 @@ $(document).ready(function(){
     });
 
 });
+
+/* Máscaras ER */
+    function mascara(o,f){
+        v_obj=o
+        v_fun=f
+        setTimeout("execmascara()",1)
+    }
+    function execmascara(){
+        v_obj.value=v_fun(v_obj.value)
+    }
+    function mtel(v){
+        v=v.replace(/\D/g,""); //Remove tudo o que não é dígito
+        v=v.replace(/^(\d{2})(\d)/g,"($1) $2"); //Coloca parênteses em volta dos dois primeiros dígitos
+        v=v.replace(/(\d)(\d{4})$/,"$1-$2"); //Coloca hífen entre o quarto e o quinto dígitos
+        return v;
+    }
+    function id( el ){
+        return document.getElementById( el );
+    }
+    window.onload = function(){
+        id('phone').onkeyup = function(){
+            mascara( this, mtel );
+        }
+    }
 </script>
 @endsection

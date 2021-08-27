@@ -32,7 +32,7 @@ class CreateNewContactRequest extends FormRequest
             'email' => 'nullable',
             'note' => 'nullable',
             'description' => 'required',
-            'cep' => 'required|min:8|max:8',
+            'cep' => 'required|min:8|max:9',
             'number' => 'required',
             'street' => 'required',
             'neighborhood' => 'required',
