@@ -54,10 +54,7 @@ class ContactController extends Controller
         $categories = $this->categoryServices->getAllCategories();
 
         if ($search != null) {
-            $catId = $this->categoryServices->getCategoryId($search);
-            $filtered = $this->contactServices->filter($catId, $user->id);
-            $filtered = $filtered->data->toArray();
-            $contacts = $filtered;
+            $contacts = $this->contactServices->getContactByName($search, $user->id);
         }
 
         return view('contacts.index', compact('contacts', 'search', 'categories'));
@@ -221,7 +218,7 @@ class ContactController extends Controller
 
     public function downExcel()
     {
-        return Excel::download(new ContactsExport(), 'contacts.xls');
+        return Excel::download(new ContactsExport($this->contactServices), 'contacts.xls');
     }
 
     public function autocomplete(Request $request)

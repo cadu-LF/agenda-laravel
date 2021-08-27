@@ -56,7 +56,10 @@ Lista de contatos {{$search}}
     </div>
     <div>
         <div class="form-group">
-            <input type="text" name="name" id="name" class="form-control input-lg" placeholder="Buscar nome" />
+            <form class='mb-5 d-flex'>
+                <input type="text" name="search" id="name" class="form-control mb-2" placeholder="Buscar nome" />
+                <button class='btn btn-primary ml-5' type='submit'>Buscar</button>
+            </form>
             <div id="nameList">
             </div>
         </div>
