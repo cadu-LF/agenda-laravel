@@ -23,6 +23,10 @@
     </style>
 </head>
 <body>
+        <header>
+            Contatos
+        </header>
+        <main>
         <table>
             <tr>
                 <th>Name</th>
@@ -35,19 +39,32 @@
                 <th>Criado em</th>
                 <th>Atualizado em</th>
             </tr>
-            @foreach($contacts as $contact)
-            <tr>
-                <th>{{$contact->fullname}}</th>
-                <th>{{$contact->phone}}</th>
-                <th>{{$contact->email}}</th>
-                <th>{{$contact->note}}</th>
-                <th>{{$contact->id_user}}</th>
-                <th>{{$contact->id_address}}</th>
-                <th>{{$contact->id_category}}</th>
-                <th>{{$contact->created_at}}</th>
-                <th>{{$contact->updated_at}}</th>
+                        <tr>
+                <th>alex</th>
+                <th>+5516981511985</th>
             </tr>
-            @endforeach
-        </table>
+                        <tr>
+                <th>Breno</th>
+                <th>+55 16 99175-1555</th>
+            </tr>
+                        <tr>
+                <th>Novo</th>
+                <th>11224455</th>
+            </tr>
+                        <tr>
+                <th>nome</th>
+                <th>123456552</th>
+            </tr>
+                        <tr>
+                <th>Carol</th>
+                <th>+55 16 99737-6949</th>
+            </tr>
+                        <tr>
+                <th>carol</th>
+                <th>11224455</th>
+            </tr>
+                    </table>
+        </main>
+    </div>
 </body>
 </html>

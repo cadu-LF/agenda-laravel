@@ -2,13 +2,13 @@
 
 namespace App\Exports;
 
-use App\Model\Contact;
-use App\Services\Contact\ContactServices;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
-use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\FromView;
+use App\Services\Contact\ContactServices;
 use Maatwebsite\Excel\Concerns\WithCustomStartCell;
 
-class ContactsExport implements FromCollection, WithCustomStartCell
+class ContactsExport implements FromView, WithCustomStartCell
 {
 
     protected $contactService;
@@ -21,11 +21,14 @@ class ContactsExport implements FromCollection, WithCustomStartCell
     /**
     * @return \Illuminate\Support\Collection
     */
-    public function collection()
+    public function view(): View
     {
         $user = Auth::user();
         $contacts = $this->contactService->getContactByUser($user->id);
-        return $contacts->data;
+        $contacts = $contacts->data;
+        return view('templates.excel', [
+            'contacts' => $contacts
+        ]);
     }
 
     public function startCell(): string
