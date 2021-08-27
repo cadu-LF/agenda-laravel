@@ -1,6 +1,11 @@
 @extends('layout')
 
 @section('head')
+<!-- Autocomplete -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 <!-- OneSignal -->
 <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
 <script>
@@ -49,9 +54,14 @@ Lista de contatos {{$search}}
             <a href="{{route('contatos.excel')}}" class='btn btn-secondary'>Gerar Planilha Excel</a>
         </div>
     </div>
-    <form>
-        <input class='form-control mb-2 typeahead' type='text' placeholder='Pesquise aqui'/>
-    </form>
+    <div>
+        <div class="form-group">
+            <input type="text" name="name" id="name" class="form-control input-lg" placeholder="Buscar nome" />
+            <div id="nameList">
+            </div>
+        </div>
+    {{ csrf_field() }}
+    </div>
     <a href='/contatos/create' class='btn btn-success mb-3'>Adicionar novo contato</a>
     <ul class='list-group'>
         @foreach ($contacts as $contact)
@@ -72,18 +82,31 @@ Lista de contatos {{$search}}
             </li>
         @endforeach
     </ul>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js" integrity="sha512-HWlJyU4ut5HkEj0QsK/IxBCY55n5ZpskyjVlAoV9Z7XQwwkqXoYdCIC93/htL3Gu5H3R4an/S0h2NXfbZk3g7w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script type="text/javascript">
-        var path = "{{route('autocomplete')}}";
-        $('input.typeahead').typeahead({
-            source:function(terms, process){
-                return $.get(path, {terms:terms}, function(data){
-                    return process(data);
-                });
-            }
-        });
-    </script>
+    <script>
+$(document).ready(function(){
+
+ $('#name').keyup(function(){
+        var query = $(this).val();
+        if(query != '')
+        {
+         var _token = $('input[name="_token"]').val();
+         $.ajax({
+          url:"{{ route('autocomplete') }}",
+          method:"POST",
+          data:{query:query, _token:_token},
+          success:function(data){
+           $('#nameList').fadeIn();
+                    $('#nameList').html(data);
+          }
+         });
+        }
+    });
+
+    $(document).on('click', 'li', function(){
+        $('#name').val($(this).text());
+        $('#nameList').fadeOut();
+    });
+
+});
+</script>
 @endsection

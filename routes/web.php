@@ -34,4 +34,4 @@ Route::get('/email', function () {
     return new Welcome();
 });
 
-Route::get('/autocomplete', 'ContactController@autocomplete')->middleware('auth')->name('autocomplete');
+Route::post('/autocomplete', 'AutocompleteController@autocomplete')->middleware('auth')->name('autocomplete');

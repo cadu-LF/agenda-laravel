@@ -226,8 +226,10 @@ class ContactController extends Controller
 
     public function autocomplete(Request $request)
     {
+        $search = $request->get('term');
+
         $datas = Contact::select('fullname')
-                            ->where('fullname', 'LIKE', "%{$request->terms}%")
+                            ->where('fullname', 'LIKE', "%{$search}%")
                             ->get();
         return response()->json($datas);
     }
