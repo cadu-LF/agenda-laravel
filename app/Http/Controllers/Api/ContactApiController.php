@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\Address\AddressServices;
+use App\Services\API\APIContactServices;
 use App\Services\Contact\ContactServices;
 use App\Services\Category\CategoryServices;
 use App\Services\Params\Address\CreateAddressServiceParams;
@@ -22,7 +23,7 @@ class ContactApiController extends Controller
     protected $categoryService;
 
     public function __construct(
-        ContactServices $contactService,
+        APIContactServices $contactService,
         AddressServices $addressService,
         CategoryServices $categoryService
     ) {
@@ -33,7 +34,8 @@ class ContactApiController extends Controller
 
     public function index()
     {
-        return $this->contactService->getAllContacts();
+        $contacts = $this->contactService->getAllContacts();
+        return response()->json($contacts);
     }
 
     public function store(Request $request)
@@ -69,13 +71,13 @@ class ContactApiController extends Controller
         );
 
         $conResponse = $this->contactService->createContact($contactParams);
-        echo ($conResponse->message);
+        return response()->json($conResponse);
     }
 
     public function destroy($id)
     {
-        $this->contactService->deleteContact($id);
-        return 'Contato deletado';
+        $resp = $this->contactService->deleteContact($id);
+        return response()->json($resp);
     }
 
     public function update(
@@ -141,14 +143,14 @@ class ContactApiController extends Controller
             (int) $categoryId
         );
 
-        $this->contactService->updateContact($contactParams);
-        return 'Contato atualizado';
+        $response = $this->contactService->updateContact($contactParams);
+        return response()->json($response);
     }
 
     public function show($id)
     {
         $response = $this->contactService->getFullContact($id);
 
-        return $response->data->toArray();
+        return response()->json($response);
     }
 }
