@@ -2,7 +2,6 @@
 
 namespace App\Services\Params\Address;
 
-use App\Model\Address;
 use App\Services\Params\BaseServiceParams;
 
 class CreateAddressServiceParams extends BaseServiceParams

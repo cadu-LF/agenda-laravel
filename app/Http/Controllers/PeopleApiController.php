@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\People\PeopleApiServices;
 use Illuminate\Http\Request;
+use App\Services\People\PeopleApiServices;
 
 class PeopleApiController
 {

@@ -2,10 +2,8 @@
 
 namespace App\Listener;
 
-use App\Event\NewUser;
 use App\Mail\Welcome;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
+use App\Event\NewUser;
 use Illuminate\Support\Facades\Mail;
 
 class SendNewUserEmail

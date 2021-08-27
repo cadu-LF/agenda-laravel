@@ -2,8 +2,8 @@
 
 namespace App\Repositories;
 
-use App\Models\UserDevice;
 use Exception;
+use App\Models\UserDevice;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 /**

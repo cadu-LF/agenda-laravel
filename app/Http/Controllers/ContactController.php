@@ -2,24 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\ContactsExport;
-use PDF;
+use App\Model\Contact;
 use Illuminate\Http\Request;
+use App\Exports\ContactsExport;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Services\Address\AddressServices;
 use App\Services\Contact\ContactServices;
 use App\Services\Category\CategoryServices;
 use App\Http\Requests\Contact\UpdateContactRequest;
 use App\Http\Requests\Contact\CreateNewContactRequest;
-use App\Model\Contact;
 use App\Services\Params\Address\CreateAddressServiceParams;
 use App\Services\Params\Address\UpdateAddressServiceParams;
 use App\Services\Params\Contact\CreateContactServiceParams;
+use App\Services\Params\Contact\UpdateContactServiceParams;
 use App\Services\Params\Category\CreateCategoryServiceParams;
 use App\Services\Params\Category\UpdateCategoryServiceParams;
-use App\Services\Params\Contact\UpdateContactServiceParams;
-use Illuminate\Support\Facades\App;
-use Maatwebsite\Excel\Facades\Excel;
 
 class ContactController extends Controller
 {
@@ -69,7 +68,6 @@ class ContactController extends Controller
     public function store(CreateNewContactRequest $request)
     {
         $user = Auth::user();
-        dump($request->description);
         $addressParams = new CreateAddressServiceParams(
             $request->cep,
             $request->number,
@@ -165,7 +163,6 @@ class ContactController extends Controller
             );
 
             $addressResponse = $this-> addressServices->createAddress($addressParams);
-            dump($addressResponse->data->toArray());
             $addressId = $addressResponse->data->toArray()[0]['id'];
         } else {
             $addressParams = new UpdateAddressServiceParams(

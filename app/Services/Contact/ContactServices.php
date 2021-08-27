@@ -2,11 +2,10 @@
 
 namespace App\Services\Contact;
 
-use App\Repositories\ContactRepositoryEloquent;
 use App\Services\Address\AddressServices;
-use App\Services\Params\Contact\CreateContactServiceParams;
-use App\Services\Params\Contact\UpdateContactServiceParams;
 use App\Services\Responses\ServiceResponse;
+use App\Repositories\ContactRepositoryEloquent;
+use App\Services\Params\Contact\UpdateContactServiceParams;
 
 class ContactServices
 {

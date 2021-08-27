@@ -6,7 +6,6 @@ use App\Model\Category;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use App\Repositories\Contracts\CategoryRepository;
-use App\Services\Params\Category\CreateCategoryServiceParams;
 
 /**
  * Class CategoryRepositoryEloquent.

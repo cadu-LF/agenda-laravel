@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers\Api;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\Address\AddressServices;
-use App\Services\Category\CategoryServices;
 use App\Services\Contact\ContactServices;
+use App\Services\Category\CategoryServices;
 use App\Services\Params\Address\CreateAddressServiceParams;
 use App\Services\Params\Address\UpdateAddressServiceParams;
-use App\Services\Params\Category\CreateCategoryServiceParams;
-use App\Services\Params\Category\UpdateCategoryServiceParams;
 use App\Services\Params\Contact\CreateContactServiceParams;
 use App\Services\Params\Contact\UpdateContactServiceParams;
-use Illuminate\Http\Request;
+use App\Services\Params\Category\CreateCategoryServiceParams;
+use App\Services\Params\Category\UpdateCategoryServiceParams;
 
 class ContactApiController extends Controller
 {
@@ -113,7 +113,6 @@ class ContactApiController extends Controller
             );
 
             $addressResponse = $this-> addressService->createAddress($addressParams);
-            dump($addressResponse->data->toArray());
             $addressId = $addressResponse->data->toArray()[0]['id'];
         } else {
             $addressParams = new UpdateAddressServiceParams(

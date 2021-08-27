@@ -2,9 +2,9 @@
 
 namespace App\Services\People;
 
-use App\Repositories\ContactRepositoryEloquent;
 use Google_Client;
 use Google_Service_PeopleService;
+use App\Repositories\ContactRepositoryEloquent;
 
 class PeopleApiServices
 {

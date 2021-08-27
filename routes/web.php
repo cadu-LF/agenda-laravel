@@ -15,8 +15,6 @@
 
 use App\Mail\Welcome;
 
-Route::resource('/login', 'LoginController');
-
 Auth::routes();
 // Contacts Routes
 Route::resource('/contatos', 'ContactController')->middleware('auth');
