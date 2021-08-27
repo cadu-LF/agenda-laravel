@@ -11,6 +11,7 @@ use App\Services\Contact\ContactServices;
 use App\Services\Category\CategoryServices;
 use App\Http\Requests\Contact\UpdateContactRequest;
 use App\Http\Requests\Contact\CreateNewContactRequest;
+use App\Model\Contact;
 use App\Services\Params\Address\CreateAddressServiceParams;
 use App\Services\Params\Address\UpdateAddressServiceParams;
 use App\Services\Params\Contact\CreateContactServiceParams;
@@ -225,7 +226,9 @@ class ContactController extends Controller
 
     public function autocomplete(Request $request)
     {
-        $contact = Contact::select('fullname')->where('fullname', 'LIKE', "%{request->terms}%")->get;
-        return response()->json($contact);
+        $datas = Contact::select('fullname')
+                            ->where('fullname', 'LIKE', "%{$request->terms}%")
+                            ->get();
+        return response()->json($datas);
     }
 }
