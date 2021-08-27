@@ -32,6 +32,7 @@ Editar Contato {{$contact['fullname']}}
             value="{{$contact['phone']}}"
             name='phone'
             type='text'
+            id='phone'
         />
     </div>
     <div class='mb-3'>
@@ -83,6 +84,7 @@ Editar Contato {{$contact['fullname']}}
             type='text'
             value={{$address['cep']}}
             onblur="pesquisacep(this.value);"
+            onkeypress="mascaraCep(this, '#####-###')"
             name='cep'
             id='cep'
         />
@@ -92,6 +94,7 @@ Editar Contato {{$contact['fullname']}}
             type='text'
             value=''
             onblur="pesquisacep(this.value);"
+            onkeypress="mascaraCep(this, '#####-###')"
             name='cep'
             id='cep'
         />
@@ -236,5 +239,41 @@ function pesquisacep(valor) {
         limpa_formulário_cep();
     }
 };
+
+    /* Máscaras ER */
+    function mascara(o,f){
+        v_obj=o
+        v_fun=f
+        setTimeout("execmascara()",1)
+    }
+    function execmascara(){
+        v_obj.value=v_fun(v_obj.value)
+    }
+    function mtel(v){
+        v=v.replace(/\D/g,""); //Remove tudo o que não é dígito
+        v=v.replace(/^(\d{2})(\d)/g,"($1) $2"); //Coloca parênteses em volta dos dois primeiros dígitos
+        v=v.replace(/(\d)(\d{4})$/,"$1-$2"); //Coloca hífen entre o quarto e o quinto dígitos
+        return v;
+    }
+    function id( el ){
+        return document.getElementById( el );
+    }
+    window.onload = function(){
+        id('phone').onkeyup = function(){
+            mascara( this, mtel );
+        }
+        id('cep').onkeyup = function(){
+            mascaraCep(this, mtel)
+        }
+    }
+
+    function mascaraCep(t, mask){
+        var i = t.value.length;
+        var saida = mask.substring(1,0);
+        var texto = mask.substring(i)
+        if (texto.substring(0,1) != saida){
+            t.value += texto.substring(0,1);
+        }
+    }
 
 </script>

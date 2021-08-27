@@ -16,6 +16,10 @@ Criar novo contato
                                         'type' => 'text',
                                         'name' => 'phone'
                                     ])
+    <div class='mb-3'>
+        <label class='form-label'>Telefone</label>
+        <input class='form-control' type='text' name='phone' id='phone'/>
+    </div>
     @include('components.form-group', ['labelName' => 'Anotações',
                                         'type' => 'text',
                                         'name' => 'note'
@@ -34,6 +38,7 @@ Criar novo contato
             type='text'
             value=''
             onblur="pesquisacep(this.value);"
+            onkeypress="mascaraCep(this, '#####-###')"
             name='cep'
             id='cep'
         />
@@ -139,13 +144,37 @@ function pesquisacep(valor) {
     }
 };
 
-function toggleButton(){
-    let x = document.getElementById('hide/show')
-    if(x.style.display === 'none'){
-        x.style.display = 'block'
-    }else{
-        x.style.display = 'none'
+    /* Máscaras ER */
+    function mascara(o,f){
+        v_obj=o
+        v_fun=f
+        setTimeout("execmascara()",1)
     }
-}
+    function execmascara(){
+        v_obj.value=v_fun(v_obj.value)
+    }
+    function mtel(v){
+        v=v.replace(/\D/g,""); //Remove tudo o que não é dígito
+        v=v.replace(/^(\d{2})(\d)/g,"($1) $2"); //Coloca parênteses em volta dos dois primeiros dígitos
+        v=v.replace(/(\d)(\d{4})$/,"$1-$2"); //Coloca hífen entre o quarto e o quinto dígitos
+        return v;
+    }
+    function id( el ){
+        return document.getElementById( el );
+    }
+    window.onload = function(){
+        id('phone').onkeyup = function(){
+            mascara( this, mtel );
+        }
+    }
+
+    function mascaraCep(t, mask){
+        var i = t.value.length;
+        var saida = mask.substring(1,0);
+        var texto = mask.substring(i)
+        if (texto.substring(0,1) != saida){
+            t.value += texto.substring(0,1);
+        }
+    }
 
 </script>
