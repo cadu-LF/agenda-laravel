@@ -2,7 +2,6 @@
 
 namespace App\Services\API;
 
-use App\Services\Responses\ServiceResponse;
 use App\Repositories\ContactRepositoryEloquent;
 use App\Services\Params\Contact\UpdateContactServiceParams;
 use App\Services\Responses\ApiResponse;
